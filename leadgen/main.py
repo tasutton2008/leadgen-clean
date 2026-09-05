@@ -12,6 +12,10 @@ from sqlalchemy.orm import Session
 from .database import get_db, SessionLocal
 from .models import Lead, Product
 
+import os
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 def get_cart_count(request: Request):
     cart = request.session.get("cart", [])
     return sum(item["qty"] for item in cart)
@@ -25,8 +29,8 @@ app.add_middleware(
     session_cookie="leadgen_session"
 )
 
-templates = Jinja2Templates(directory="leadgen/templates")
-app.mount("/static", StaticFiles(directory="leadgen/static"), name="static")
+templates = Jinja2Templates(directory=os.path.join(BASE_DIR, "templates"))
+app.mount("/static", StaticFiles(directory=os.path.join(BASE_DIR, "static")), name="static")
 
 # ---------------------------
 # OPTION B — Lead Capture
