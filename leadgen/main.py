@@ -38,9 +38,9 @@ def landing(request: Request):
     return templates.TemplateResponse(
         name="option_b.html",
         context={
-            "request": request,
             "cart_count": get_cart_count(request)
-        }
+        },
+        request=request
     )
 
 @app.post("/submit-lead")
@@ -67,10 +67,10 @@ def submit_lead(
     return templates.TemplateResponse(
         name="lead_success.html",
         context={
-            "request": request,
             "lead": lead,
             "cart_count": get_cart_count(request)
-        }
+        },
+        request=request
     )
 
 # ---------------------------
@@ -83,7 +83,8 @@ def product_detail(product_id: int, request: Request, db: Session = Depends(get_
     if not product:
         return templates.TemplateResponse(
             name="404.html",
-            context={"request": request, "message": "Product not found"}
+            context={"message": "Product not found"},
+            request=request
         )
 
     related_products = (
@@ -95,11 +96,11 @@ def product_detail(product_id: int, request: Request, db: Session = Depends(get_
     return templates.TemplateResponse(
         name="product_detail.html",
         context={
-            "request": request,
             "product": product,
             "related_products": related_products,
             "cart_count": get_cart_count(request)
-        }
+        },
+        request=request
     )
 
 # ---------------------------
@@ -247,12 +248,12 @@ async def view_cart(request: Request):
     return templates.TemplateResponse(
         name="cart.html",
         context={
-            "request": request,
             "cart_items": cart_items,
             "total_price": total_price,
             "cart_count": cart_count,
             "recommended_products": recommended_products
-        }
+        },
+        request=request
     )
 
 # ---------------------------
@@ -279,12 +280,12 @@ def product_catalog(
     return templates.TemplateResponse(
         name="option_c.html",
         context={
-            "request": request,
             "products": products,
             "category": category,
             "search": search,
             "cart_count": get_cart_count(request)
-        }
+        },
+        request=request
     )
 
 # ---------------------------
@@ -311,14 +312,14 @@ async def submit_form(
     return templates.TemplateResponse(
         name="submit_success.html",
         context={
-            "request": request,
             "name": name,
             "email": email,
             "message": message,
             "product_name": product_name,
             "product_category": product_category,
             "product_id": product_id
-        }
+        },
+        request=request
     )
 
 import uvicorn
