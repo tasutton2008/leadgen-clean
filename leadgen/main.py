@@ -12,8 +12,6 @@ from sqlalchemy.orm import Session
 from .database import get_db, SessionLocal
 from .models import Lead, Product
 
-import os
-
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 def get_cart_count(request: Request):
@@ -38,8 +36,8 @@ app.mount("/static", StaticFiles(directory=os.path.join(BASE_DIR, "static")), na
 @app.get("/", response_class=HTMLResponse)
 def landing(request: Request):
     return templates.TemplateResponse(
-        "option_b.html",
-        {
+        name="option_b.html",
+        context={
             "request": request,
             "cart_count": get_cart_count(request)
         }
@@ -67,8 +65,8 @@ def submit_lead(
     db.refresh(lead)
 
     return templates.TemplateResponse(
-        "lead_success.html",
-        {
+        name="lead_success.html",
+        context={
             "request": request,
             "lead": lead,
             "cart_count": get_cart_count(request)
@@ -84,8 +82,8 @@ def product_detail(product_id: int, request: Request, db: Session = Depends(get_
 
     if not product:
         return templates.TemplateResponse(
-            "404.html",
-            {"request": request, "message": "Product not found"}
+            name="404.html",
+            context={"request": request, "message": "Product not found"}
         )
 
     related_products = (
@@ -95,8 +93,8 @@ def product_detail(product_id: int, request: Request, db: Session = Depends(get_
     )
 
     return templates.TemplateResponse(
-        "product_detail.html",
-        {
+        name="product_detail.html",
+        context={
             "request": request,
             "product": product,
             "related_products": related_products,
@@ -191,7 +189,7 @@ async def decrease_cart_quantity(request: Request, index: int):
     return RedirectResponse(url="/cart", status_code=303)
 
 # ---------------------------
-# VIEW CART (database version + recommendations)
+# VIEW CART
 # ---------------------------
 @app.get("/cart", response_class=HTMLResponse)
 async def view_cart(request: Request):
@@ -200,7 +198,6 @@ async def view_cart(request: Request):
 
     db = SessionLocal()
 
-    # Build cart items from DB
     for index, entry in enumerate(cart):
         product = db.query(Product).filter(Product.id == entry["id"]).first()
 
@@ -225,7 +222,6 @@ async def view_cart(request: Request):
     total_price = sum(item["price"] * item["qty"] for item in cart_items)
     cart_count = sum(item["qty"] for item in cart_items)
 
-    # Recommended products from DB (with numeric prices)
     recommended_products_raw = db.query(Product).limit(3).all()
     recommended_products = []
 
@@ -249,8 +245,8 @@ async def view_cart(request: Request):
     db.close()
 
     return templates.TemplateResponse(
-        "cart.html",
-        {
+        name="cart.html",
+        context={
             "request": request,
             "cart_items": cart_items,
             "total_price": total_price,
@@ -258,41 +254,6 @@ async def view_cart(request: Request):
             "recommended_products": recommended_products
         }
     )
-
-# ---------------------------
-# SUBMIT QUOTE (database version)
-# ---------------------------
-@app.post("/cart/submit-quote")
-async def submit_cart_quote(
-    request: Request,
-    name: str = Form(...),
-    email: str = Form(...),
-    message: str = Form(...)
-):
-    cart = request.session.get("cart", [])
-    print("CART SESSION CONTENTS:", cart)
-
-    db = SessionLocal()
-    products_in_cart = []
-
-    for entry in cart:
-        product = db.query(Product).filter(Product.id == entry["id"]).first()
-        if product:
-            products_in_cart.append(product)
-
-    db.close()
-
-    product_list = ", ".join([p.name for p in products_in_cart])
-
-    print("QUOTE REQUEST:")
-    print("Name:", name)
-    print("Email:", email)
-    print("Message:", message)
-    print("Products:", product_list)
-
-    request.session["cart"] = []  # clear cart
-
-    return RedirectResponse(url="/products", status_code=303)
 
 # ---------------------------
 # PRODUCT CATALOG PAGE
@@ -316,8 +277,8 @@ def product_catalog(
     db.close()
 
     return templates.TemplateResponse(
-        "option_c.html",
-        {
+        name="option_c.html",
+        context={
             "request": request,
             "products": products,
             "category": category,
@@ -325,18 +286,6 @@ def product_catalog(
             "cart_count": get_cart_count(request)
         }
     )
-
-@app.get("/debug/products")
-def debug_products():
-    db = SessionLocal()
-    items = db.query(Product).all()
-    db.close()
-    return {
-        "products": [
-            {"id": p.id, "name": p.name, "price": p.price}
-            for p in items
-        ]
-    }
 
 # ---------------------------
 # PRODUCT DETAIL FORM SUBMISSION
@@ -360,8 +309,8 @@ async def submit_form(
     print("Product ID:", product_id)
 
     return templates.TemplateResponse(
-        "submit_success.html",
-        {
+        name="submit_success.html",
+        context={
             "request": request,
             "name": name,
             "email": email,
