@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ product.name }}</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+
+    <h1>{{ product.name }}</h1>
+   <a href="/cart" class="cart-link">
+        🛒 Cart <span class="cart-badge">{{ cart_count }}</span>
+    </a>
+
+    <img src="/static/images/{{ product.image }}" alt="{{ product.name }}" class="product-image-large">
+
+    <!-- Category badge -->
+    <p class="category-tag">{{ product.category }}</p>
+
+    <p>{{ product.description }}</p>
+    <p><strong>Price: {{ product.price }}</strong></p>
+ 
+<form action="/add-to-cart/{{ product.id }}" method="post">
+
+<div class="qty-and-cart">
+    <div class="qty-wrapper">
+        <label class="qty-label">Qty</label>
+        <input type="number" name="quantity" class="qty-input" value="1" min="1" max="9999">
+    </div>
+
+    <button class="add-cart-button">
+        <span>🛒</span> Add to Cart
+    </button>
+</div>
+
+</form>
+
+  
+    <hr>
+
+    <h3>Request a Quote for This Product</h3>
+
+    <!-- Auto-filled lead form -->
+    <form action="/submit" method="post">
+
+        <!-- Hidden fields that auto-fill the backend -->
+        <input type="hidden" name="product_name" value="{{ product.name }}">
+        <input type="hidden" name="product_category" value="{{ product.category }}">
+        <input type="hidden" name="product_id" value="{{ product.id }}">
+
+        <label>Your Name:</label>
+        <input type="text" name="name" required>
+
+        <label>Your Email:</label>
+        <input type="email" name="email" required>
+
+        <label>Your Message:</label>
+        <textarea name="message">I am interested in {{ product.name }}.</textarea>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <br><br>
+    <a href="/products">Back to Catalog</a>
+
+<hr>
+
+<h3>Related Products</h3>
+
+<div class="related-grid">
+    {% for item in related_products %}
+        <div class="related-card">
+            <img src="/static/images/{{ item.image }}" alt="{{ item.name }}">
+            <h4>{{ item.name }}</h4>
+            <p>{{ item.category }}</p>
+            <a href="/products/{{ item.id }}">View Details</a>
+        </div>
+    {% endfor %}
+</div>
+
+</body>
+</html>

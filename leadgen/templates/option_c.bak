@@ -1,0 +1,34 @@
+<!-- leadgen/templates/option_c.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Product Catalog</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <h1>Cleaning Products</h1>
+
+<div class="category-filters">
+    <a href="/products" class="filter-btn">All</a>
+    <a href="/products?category=Commercial" class="filter-btn">Commercial</a>
+    <a href="/products?category=Medical" class="filter-btn">Medical</a>
+    <a href="/products?category=Industrial" class="filter-btn">Industrial</a>
+</div>
+
+    <div class="product-list">
+        {% for product in products %}
+        <div class="product-card">
+            <img src="/static/images/{{ product.image }}" alt="{{ product.name }}" class="product-image">
+
+            <p class="category-tag">{{ product.category }}</p>
+
+            <h2><a href="/products/{{ product.id }}">{{ product.name }}</a></h2>
+            <p>{{ product.description }}</p>
+            <p><strong>{{ product.price }}</strong></p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <a href="/">Back to Lead Form</a>
+</body>
+</html>

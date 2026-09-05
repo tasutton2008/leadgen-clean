@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lead Submitted</title>
+</head>
+<body>
+    <h1>Thank You!</h1>
+    <p>Your cleaning quote request has been submitted.</p>
+
+    <h3>Details:</h3>
+    <ul>
+        <li><strong>Name:</strong> {{ lead.name }}</li>
+        <li><strong>Email:</strong> {{ lead.email }}</li>
+        <li><strong>Phone:</strong> {{ lead.phone }}</li>
+        <li><strong>Business Type:</strong> {{ lead.business_type }}</li>
+        <li><strong>Service Needed:</strong> {{ lead.service_needed }}</li>
+    </ul>
+
+    <a href="/">Submit another lead</a>
+</body>
+</html>

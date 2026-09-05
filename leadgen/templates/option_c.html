@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Product Catalog</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+
+<div class="catalog-container">
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h3>Categories</h3>
+
+        <ul class="category-list">
+            <li><a href="/products">All Products</a></li>
+
+            {% for category in ["Commercial", "Industrial", "Residential", "Specialty"] %}
+                <li>
+                    <a 
+                        href="/products?category={{ category }}"
+                        class="{% if category == request.query_params.get('category') %}active-category{% endif %}"
+                    >
+                        {{ category }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Search Bar -->
+<div class="search-container">
+    <form action="/products" method="get">
+        <input 
+            type="text" 
+            name="search" 
+            placeholder="Search products..."
+            value="{{ request.query_params.get('search', '') }}"
+        >
+
+        {% if request.query_params.get('category') %}
+            <input type="hidden" name="category" value="{{ request.query_params.get('category') }}">
+        {% endif %}
+
+        <button type="submit">Search</button>
+    </form>
+</div>
+
+    <!-- Main Product Grid -->
+    <div class="product-grid">
+        {% for product in products %}
+            <div class="product-card">
+                <img src="/static/images/{{ product.image }}" alt="{{ product.name }}">
+                <h3>{{ product.name }}</h3>
+                <p>{{ product.category }}</p>
+                <p><strong>{{ product.price }}</strong></p>
+                <a href="/products/{{ product.id }}" class="details-button">
+                <span>🔍</span> View Details
+                </a>
+
+            </div>
+        {% endfor %}
+    </div>
+
+</div>
+
+</body>
+</html>

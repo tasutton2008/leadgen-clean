@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Your Cart</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+<h1>Your Cart</h1>
+
+{% if cart_items %}
+    <ul>
+        {% for item in cart_items %}
+<li class="cart-item">
+<div class="cart-item">
+
+    <!-- Product Thumbnail -->
+    <img src="/static/images/{{ item.image }}" alt="{{ item.name }}" class="cart-thumb">
+
+    <!-- Product Info -->
+    <div class="cart-item-info">
+        <span class="cart-item-name">{{ item.name }}</span>
+        <span class="cart-item-price">${{ "%.2f"|format(item.price) }}</span>
+        <span class="cart-item-subtotal">Subtotal: ${{ "%.2f"|format(item.price * item.qty) }}</span>
+    </div>
+
+    <!-- Quantity + Update -->
+    <form action="/cart/update/{{ item.index }}" method="post" class="cart-update-form">
+        <input 
+            type="number" 
+            name="qty" 
+            class="qty-input"
+            value="{{ item.qty }}"
+            min="1"
+            max="9999"
+        >
+        <button class="qty-btn">Update</button>
+    </form>
+
+</div>
+
+    <div class="qty-controls">
+        <form action="/cart/decrease/{{ item.index }}" method="post">
+            <button class="qty-btn">−</button>
+        </form>
+
+        <form action="/cart/increase/{{ item.index }}" method="post">
+            <button class="qty-btn">+</button>
+        </form>
+
+       <form action="/cart/remove/{{ item.index }}" method="post" style="display:inline;">
+           <button class="cart-remove-btn">
+               <i class="fa fa-trash"></i>
+            </button>
+        </form>
+
+    </div>
+</li>
+
+        {% endfor %}
+    </ul>
+<h3>You May Also Like</h3>
+
+<div class="recommend-grid">
+    {% for product in recommended_products %}
+        <div class="recommend-card">
+            <img src="/static/images/{{ product.image }}" alt="{{ product.name }}">
+            <h4>{{ product.name }}</h4>
+            <p>${{ "%.2f"|format(product.price) }}</p>
+            <a href="/products/{{ product.id }}" class="details-button">View</a>
+        </div>
+    {% endfor %}
+</div>
+
+     <h3>Total: ${{ "%.2f"|format(total_price) }}</h3>
+
+    <h3>Request a Quote</h3>
+    <form action="/cart/submit-quote" method="post">
+        <label>Your Name:</label>
+        <input type="text" name="name" required>
+
+        <label>Your Email:</label>
+        <input type="email" name="email" required>
+
+        <label>Your Message:</label>
+        <textarea name="message">I am interested in these products.</textarea>
+
+        <button type="submit">Submit Quote Request</button>
+    </form>
+
+{% else %}
+    <p>Your cart is empty.</p>
+{% endif %}
+
+<br>
+<a href="/products">Back to Catalog</a>
+
+</body>
+</html>
