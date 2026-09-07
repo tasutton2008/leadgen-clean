@@ -322,6 +322,32 @@ async def submit_form(
         request=request
     )
 
+# ---------------------------
+# CONTACT PAGE
+# ---------------------------
+@app.get("/contact", response_class=HTMLResponse)
+def contact(request: Request):
+    return templates.TemplateResponse(
+        "contact.html",
+        {
+            "request": request,
+            "cart_count": get_cart_count(request)
+        }
+    )
+
+# ---------------------------
+# LEAD FORM PAGE
+# ---------------------------
+@app.get("/lead_form", response_class=HTMLResponse)
+def lead_form(request: Request):
+    return templates.TemplateResponse(
+        "option_b.html",
+        {
+            "request": request,
+            "cart_count": get_cart_count(request)
+        }
+    )
+
 import uvicorn
 
 if __name__ == "__main__":
