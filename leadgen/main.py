@@ -328,11 +328,11 @@ async def submit_form(
 @app.get("/contact", response_class=HTMLResponse)
 def contact(request: Request):
     return templates.TemplateResponse(
-        "contact.html",
-        {
-            "request": request,
+        name="contact.html",
+        context={
             "cart_count": get_cart_count(request)
-        }
+        },
+        request=request
     )
 
 # ---------------------------
@@ -341,11 +341,11 @@ def contact(request: Request):
 @app.get("/lead_form", response_class=HTMLResponse)
 def lead_form(request: Request):
     return templates.TemplateResponse(
-        "option_b.html",
-        {
-            "request": request,
+        name="option_b.html",
+        context={
             "cart_count": get_cart_count(request)
-        }
+        },
+        request=request
     )
 
 import uvicorn
