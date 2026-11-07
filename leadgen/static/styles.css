@@ -619,3 +619,26 @@ a[href="/products"] {
     width: 200px !important;
     margin: 20px auto 0 !important;
 }
+
+/* Force Lead Form Layout */
+.lead-container {
+    max-width: 700px;
+    width: 90%;
+    margin: 40px auto;
+}
+
+form.lead-form {
+    display: block !important;
+}
+
+form.lead-form input {
+    display: block !important;
+    width: 100% !important;
+    margin-bottom: 12px !important;
+}
+
+form.lead-form button {
+    display: block !important;
+    width: 200px !important;
+    margin: 20px auto 0 !important;
+}
