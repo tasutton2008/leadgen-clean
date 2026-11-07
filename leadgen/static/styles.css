@@ -601,3 +601,21 @@ a[href="/products"] {
     width: 200px;
     margin: 20px auto 0;
 }
+
+/* Force Lead Form Vertical Layout */
+.lead-form {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+    width: 100% !important;
+}
+
+.lead-form input {
+    display: block !important;
+    width: 100% !important;
+}
+
+.lead-form button {
+    width: 200px !important;
+    margin: 20px auto 0 !important;
+}
