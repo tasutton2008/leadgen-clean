@@ -1,21 +1,29 @@
 <!-- leadgen/templates/landing_option_b.html -->
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Lead Capture</title>
-</head>
 <body>
     {% include "navbar.html" %}
-    <h1>Request a Cleaning Products Order Quote</h1>
 
-    <form action="/submit-lead" method="post">
-        <input name="name" placeholder="Your Name" required><br>
-        <input name="email" placeholder="Email" required><br>
-        <input name="phone" placeholder="Phone" required><br>
-        <input name="business_type" placeholder="Business Type"><br>
-        <input name="service_needed" placeholder="Service Needed"><br>
+    <div class="lead-container">
 
-        <button type="submit">Submit</button>
-    </form>
+        <h1>Request a Cleaning Products Order Quote</h1>
+
+        <form action="/submit-lead" method="post" class="lead-form">
+
+            <input name="name" placeholder="Your Name" required>
+
+            <input name="email" placeholder="Email" required>
+
+            <input name="phone" placeholder="Phone" required>
+
+            <input name="business_type" placeholder="Business Type">
+
+            <input name="service_needed" placeholder="Service Needed">
+
+            <button type="submit">Submit</button>
+
+        </form>
+
+    </div>
 </body>
 </html>
