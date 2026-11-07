@@ -1,7 +1,7 @@
 <nav class="navbar">
     <ul class="nav-links">
         <li><a href="/">Home</a></li>
-        <li><a href="/products">Products</a></li>
+        <li><a href="/products" class="products-link">Products</a></li>
         <li><a href="/cart">Cart ({{ cart_count }})</a></li>
         <li><a href="/contact">Contact</a></li>
         <li><a href="/lead_form">Lead Form</a></li>
@@ -31,7 +31,12 @@
         font-size: 18px;
         font-weight: 500;
         height: 24px;
-    }  
+    }
+
+    .products-link {
+    position: relative;
+    top: 1px;
+    }
     .nav-links li a:hover {
         text-decoration: underline;
     }
